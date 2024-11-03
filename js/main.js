@@ -138,7 +138,7 @@ var yidong=function(){
 /*
 暂停事件
  */
-var number = 0;  
+var number = 1;  
 var set; // 确保这个变量在全局作用域中，以便可以在多个函数中使用和清除  
   
 // 暂停/继续功能  
@@ -170,7 +170,7 @@ var zanting = function() {
             bodyobj.attachEvent("ontouchmove", bianjie);  
         }  
         set = setInterval(start, 20);  
-        number = 0;  
+        number = 1;  
         // 启用继续按钮，禁用其他按钮（如果有的话）  
         suspendButton.disabled = false;  
         // 假设有返回主页和重新开始按钮，这里禁用它们  
