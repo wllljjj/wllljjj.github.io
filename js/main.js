@@ -124,29 +124,28 @@ function ourplan(X,Y){
  */
 var selfplan=new ourplan(120,485);
 //移动事件
+// 获取元素  
 var ourPlan = document.getElementById('ourplan');  
-var initialX = 100; // 初始X坐标  
-var moveStep = 30; // 每次移动的步长  
+var slider = document.getElementById('slider');  
+var windowWidth = window.innerWidth;  
+var planeWidth = ourPlan.offsetWidth; // 获取飞机的宽度  
+var maxX = windowWidth - planeWidth; // 计算飞机可以移动到的最大X坐标  
   
 // 设置飞机的初始位置  
-ourPlan.style.left = initialX + 'px';  
-ourPlan.style.top = '100px'; // 假设初始Y坐标为100px  
+ourPlan.style.left = slider.value + 'px';  
+ourPlan.style.top = '500px'; // 假设初始Y坐标为100px  
   
-// 左移按钮点击事件  
-document.getElementById('leftButton').addEventListener('click', function() {  
-    var currentLeft = parseInt(ourPlan.style.left, 10);  
-    if (currentLeft - moveStep >= 0) { // 确保不会移出边界  
-        ourPlan.style.left = (currentLeft - moveStep) + 'px';  
+// 监听滑块的值变化事件  
+slider.addEventListener('input', function() {  
+    var sliderValue = parseInt(slider.value, 10);  
+    // 确保滑块的值在有效范围内（0到maxX）  
+    if (sliderValue < 0) {  
+        sliderValue = 0;  
+    } else if (sliderValue > maxX) {  
+        sliderValue = maxX;  
     }  
-});  
-  
-// 右移按钮点击事件  
-document.getElementById('rightButton').addEventListener('click', function() {  
-    var currentLeft = parseInt(ourPlan.style.left, 10);  
-    var maxX = window.innerWidth - ourPlan.offsetWidth; // 计算最大X坐标，确保飞机不会移出窗口  
-    if (currentLeft + moveStep <= maxX) { // 确保不会移出边界  
-        ourPlan.style.left = (currentLeft + moveStep) + 'px';  
-    }  
+    // 更新飞机的位置  
+    ourPlan.style.left = sliderValue + 'px';  
 });
 var yidong=function(){
     var oevent=window.event||arguments[0];

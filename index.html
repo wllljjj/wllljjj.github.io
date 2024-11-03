@@ -9,13 +9,16 @@
 <style type="text/css">
 	.but{
 		position: absolute;
-		left: 560px;
+		left: 600px;
 		top: 600px;
 	}
 	.but button{
 		width: 100px;
 		height: 100px;
 	}
+	#slider {  
+            width: 100%;  
+        }
 </style>
 
 <body>
@@ -41,8 +44,7 @@
     </div>
 </div>
 <div class = "but">
-	<button id="leftButton">左移</button>
-	<button id="rightButton">右移</button>
+	<input type="range" id="slider" min="0" max="280" value="140">
 </div>
 
 
