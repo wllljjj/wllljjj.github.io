@@ -126,7 +126,7 @@ var selfplan=new ourplan(120,485);
 //移动事件
 var ourPlan = document.getElementById('ourplan');  
 var initialX = 100; // 初始X坐标  
-var moveStep = 20; // 每次移动的步长  
+var moveStep = 30; // 每次移动的步长  
   
 // 设置飞机的初始位置  
 ourPlan.style.left = initialX + 'px';  
