@@ -123,88 +123,127 @@ function ourplan(X,Y){
  创建本方飞机
  */
 var selfplan=new ourplan(120,485);
-// 移动事件
-var ourPlan = document.getElementById('ourplan');
-var yidong = function(event) {
-    var oevent = event || window.event;
-    var touch = oevent.touches[0]; // 获取第一个触点
-    var selfplanX = touch.clientX - 500;
-    var selfplanY = touch.clientY;
-    ourPlan.style.left = selfplanX - ourPlan.plansizeX / 2 + "px";
-    ourPlan.style.top = selfplanY - ourPlan.plansizeY / 2 + "px";
-};
-
+//移动事件
+var ourPlan = document.getElementById('ourplan');  
+var initialX = 100; // 初始X坐标  
+var moveStep = 20; // 每次移动的步长  
+  
+// 设置飞机的初始位置  
+ourPlan.style.left = initialX + 'px';  
+ourPlan.style.top = '100px'; // 假设初始Y坐标为100px  
+  
+// 左移按钮点击事件  
+document.getElementById('leftButton').addEventListener('click', function() {  
+    var currentLeft = parseInt(ourPlan.style.left, 10);  
+    if (currentLeft - moveStep >= 0) { // 确保不会移出边界  
+        ourPlan.style.left = (currentLeft - moveStep) + 'px';  
+    }  
+});  
+  
+// 右移按钮点击事件  
+document.getElementById('rightButton').addEventListener('click', function() {  
+    var currentLeft = parseInt(ourPlan.style.left, 10);  
+    var maxX = window.innerWidth - ourPlan.offsetWidth; // 计算最大X坐标，确保飞机不会移出窗口  
+    if (currentLeft + moveStep <= maxX) { // 确保不会移出边界  
+        ourPlan.style.left = (currentLeft + moveStep) + 'px';  
+    }  
+});
+var yidong=function(){
+    var oevent=window.event||arguments[0];
+    var chufa=oevent.srcElement||oevent.target;
+    var selfplanX=oevent.clientX-500;
+    var selfplanY=oevent.clientY;
+    ourPlan.style.left=selfplanX-selfplan.plansizeX/2+"px";
+    ourPlan.style.top=selfplanY-selfplan.plansizeY/2+"px";
+//    document.getElementsByTagName('img')[0].style.left=selfplanX-selfplan.plansizeX/2+"px";
+//    document.getElementsByTagName('img')[0]..style.top=selfplanY-selfplan.plansizeY/2+"px";
+}
 /*
 暂停事件
-*/
-var number = 0;
-var zanting = function() {
-    if (number == 0) {
-        suspenddiv.style.display = "block";
-        if (document.removeEventListener) {
-            mainDiv.removeEventListener("touchmove", yidong, true);
-            bodyobj.removeEventListener("touchmove", bianjie, true);
-        } else if (document.detachEvent) {
-            mainDiv.detachEvent("ontouchmove", yidong);
-            bodyobj.detachEvent("ontouchmove", bianjie);
+ */
+var number=0;
+var zanting=function(){
+    if(number==0){
+        suspenddiv.style.display="block";
+        if(document.removeEventListener){
+            mainDiv.removeEventListener("mousemove",yidong,true);
+            bodyobj.removeEventListener("mousemove",bianjie,true);
         }
-    } else {
-        suspenddiv.style.display = "none";
-        if (document.addEventListener) {
-            mainDiv.addEventListener("touchmove", yidong, true);
-            bodyobj.addEventListener("touchmove", bianjie, true);
-        } else if (document.attachEvent) {
-            mainDiv.attachEvent("ontouchmove", yidong);
-            bodyobj.attachEvent("ontouchmove", bianjie);
+        else if(document.detachEvent){
+            mainDiv.detachEvent("onmousemove",yidong);
+            bodyobj.detachEvent("onmousemove",bianjie);
+        }
+        clearInterval(set);
+        number=1;
+    }
+    else{
+        suspenddiv.style.display="none";
+        if(document.addEventListener){
+            mainDiv.addEventListener("mousemove",yidong,true);
+            bodyobj.addEventListener("mousemove",bianjie,true);
+        }
+        else if(document.attachEvent){
+            mainDiv.attachEvent("onmousemove",yidong);
+            bodyobj.attachEvent("onmousemove",bianjie);
+        }
+        set=setInterval(start,20);
+        number=0;
+    }
+}
+//判断本方飞机是否移出边界,如果移出边界,则取消mousemove事件,反之加上mousemove事件
+var bianjie=function(){
+    var oevent=window.event||arguments[0];
+    var bodyobjX=oevent.clientX;
+    var bodyobjY=oevent.clientY;
+    if(bodyobjX<505||bodyobjX>815||bodyobjY<0||bodyobjY>568){
+        if(document.removeEventListener){
+            mainDiv.removeEventListener("mousemove",yidong,true);
+        }
+        else if(document.detachEvent){
+            mainDiv.detachEvent("onmousemove",yidong);
         }
     }
-    number = 1 - number; // 切换状态
-};
-
-// 判断本方飞机是否移出边界,如果移出边界,则取消touchmove事件,反之加上touchmove事件
-var bianjie = function(event) {
-    var oevent = event || window.event;
-    var touch = oevent.touches[0]; // 获取第一个触点
-    var bodyobjX = touch.clientX;
-    var bodyobjY = touch.clientY;
-    if (bodyobjX < 505 || bodyobjX > 815 || bodyobjY < 0 || bodyobjY > 568) {
-        if (document.removeEventListener) {
-            mainDiv.removeEventListener("touchmove", yidong, true);
-        } else if (document.detachEvent) {
-            mainDiv.detachEvent("ontouchmove", yidong);
+    else{
+        if(document.addEventListener){
+            mainDiv.addEventListener("mousemove",yidong,true);
         }
-    } else {
-        if (document.addEventListener) {
-            mainDiv.addEventListener("touchmove", yidong, true);
-        } else if (document.attachEvent) {
-            mainDiv.attachEvent("ontouchmove", yidong);
+        else if(document.attachEvent){
+            mainDiv.attachEvent("nomousemove",yidong);
         }
     }
-};
-
-var bodyobj = document.getElementsByTagName("body")[0];
-if (document.addEventListener) {
-    // 为本方飞机添加移动和暂停
-    mainDiv.addEventListener("touchmove", yidong, true);
-    // 为本方飞机添加暂停事件
-    selfplan.imagenode.addEventListener("click", zanting, true);
-    // 为body添加判断本方飞机移出边界事件
-    bodyobj.addEventListener("touchmove", bianjie, true);
-    // 为暂停界面的继续按钮添加暂停事件
-    suspenddiv.getElementsByTagName("button")[0].addEventListener("click", zanting, true);
-    // 为暂停界面的返回主页按钮添加事件
-    suspenddiv.getElementsByTagName("button")[2].addEventListener("click", jixu, true);
-} else if (document.attachEvent) {
-    // 为本方飞机添加移动
-    mainDiv.attachEvent("ontouchmove", yidong);
-    // 为本方飞机添加暂停事件
-    selfplan.imagenode.attachEvent("onclick", zanting);
-    // 为body添加判断本方飞机移出边界事件
-    bodyobj.attachEvent("ontouchmove", bianjie);
-    // 为暂停界面的继续按钮添加暂停事件
-    suspenddiv.getElementsByTagName("button")[0].attachEvent("onclick", zanting);
-    // 为暂停界面的返回主页按钮添加事件
-    suspenddiv.getElementsByTagName("button")[2].attachEvent("click", jixu, true);
+}
+//暂停界面重新开始事件
+//function chongxinkaishi(){
+//    location.reload(true);
+//    startdiv.style.display="none";
+//    maindiv.style.display="block";
+//}
+var bodyobj=document.getElementsByTagName("body")[0];
+if(document.addEventListener){
+    //为本方飞机添加移动和暂停
+    mainDiv.addEventListener("mousemove",yidong,true);
+    //为本方飞机添加暂停事件
+    selfplan.imagenode.addEventListener("click",zanting,true);
+    //为body添加判断本方飞机移出边界事件
+    bodyobj.addEventListener("mousemove",bianjie,true);
+    //为暂停界面的继续按钮添加暂停事件
+    suspenddiv.getElementsByTagName("button")[0].addEventListener("click",zanting,true);
+//    suspenddiv.getElementsByTagName("button")[1].addEventListener("click",chongxinkaishi,true);
+    //为暂停界面的返回主页按钮添加事件
+    suspenddiv.getElementsByTagName("button")[2].addEventListener("click",jixu,true);
+}
+else if(document.attachEvent){
+    //为本方飞机添加移动
+    mainDiv.attachEvent("onmousemove",yidong);
+    //为本方飞机添加暂停事件
+    selfplan.imagenode.attachEvent("onclick",zanting);
+    //为body添加判断本方飞机移出边界事件
+    bodyobj.attachEvent("onmousemove",bianjie);
+    //为暂停界面的继续按钮添加暂停事件
+    suspenddiv.getElementsByTagName("button")[0].attachEvent("onclick",zanting);
+//    suspenddiv.getElementsByTagName("button")[1].attachEvent("click",chongxinkaishi,true);
+    //为暂停界面的返回主页按钮添加事件
+    suspenddiv.getElementsByTagName("button")[2].attachEvent("click",jixu,true);
 }
 //初始化隐藏本方飞机
 selfplan.imagenode.style.display="none";
