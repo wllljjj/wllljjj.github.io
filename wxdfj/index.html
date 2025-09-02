@@ -1,38 +1,109 @@
-﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title>榨干小美丽</title>
-    <meta http-equiv="content" content="text/html" charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="css/main.css"/>
-    <link rel="icon" href="imagE/logo.ico" type="image/x-icon">
-</head>
+<!DOCTYPE html>
+<html lang="zh-CN">
 
-<body>
-<div id="contentdiv">
-    <div id="startdiv">
-        <button onclick="begin()">榨干他！</button>
-    </div>
-    <div id="maindiv">
-        <div id="scorediv">
-            <label>毫升：</label>
-            <label id="label">0</label>
-        </div>
-        <div id="suspenddiv">
-            <button>继续</button><br/>
-            <button>重新榨干</button><br/>
-            <button>回到主页</button>
-        </div>
-        <div id="enddiv">
-            <p class="plantext">总体积</p>
-            <p id="planscore">0</p>
-            <div><button onclick="jixu()">继续</button></div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript" src="js/main.js"></script>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<div style="text-align:center;font:normal 14px/24px 'MicroSoft YaHei';">
-</div>
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			body {
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: rgb(11, 12, 26);
+			}
+			img{
+				position: absolute;
+				height: 100vh;
+			}
+			
+			.face {
+				width: 200px;
+				height: 200px;
+				position: relative;
+			}
+
+			
+			.eye {
+				position: absolute;
+				width: 60px;
+				height: 60px;
+				border-radius: 50%;
+				background-color: #E3DFD0;
+				box-shadow: inset 0 0 5px rgb(58, 58, 58);
+			}
+			
+			.eye::after {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 5%;
+				transform: transLateY(-50%);
+				width: 50%;
+				height: 50%;
+				background-color: #000;
+				border-radius: 50%;
+			}
+			
+			.face .eye:nth-child(1) {
+				top: 42%;
+				left: 25%;
+			}
+			
+			.face .eye:nth-child(2) {
+				top: 49%;
+				left: 110%;
+			}
+			#kc {
+            position: absolute;
+            pointer-events: none; /* 使图片不会阻止鼠标事件 */
+           width: 300px;
+           height: 100px;
+           z-index: 100;
+        }
+		</style>
+	</head>
+
+	<body>
+		<img src="wlw.png"/>
+		
+		<img id="kc" src="kc.png" />
+
+		<div class="face">
+			
+			<div class="eye"></div>
+			<div class="eye"></div>
+		</div>
+		<script>
+			var eye = document.querySelectorAll(".eye");
+			window.addEventListener('mousemove', function(event) {
+
+				eye.forEach(function(eye) {
+					let angle = Math.atan2(event.pageX - eye.getBoundingClientRect()
+						.left - eye.clientLeft / 2, event.pageY - eye.getBoundingClientRect().top -
+						eye.clientTop / 2);
+					let rot = angle * 180 / Math.PI * -1 - 90;
+					eye.style.transform = `rotate(${rot}deg)`;
+				})
+			})
+			
+			const image = document.getElementById("kc");
+        
+        document.addEventListener("mousemove", (event) => {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+            
+            image.style.left = mouseX + "px";
+            image.style.top = mouseY + "px";
+        });
+		</script>
+	</body>
+
 </html>
