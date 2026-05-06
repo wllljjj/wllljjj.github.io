@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>3D Room Demo</title>
+		<script type="importmap">
+			{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.158/build/three.module.js", "three/examples/jsm/": "https://cdn.jsdelivr.net/npm/three@0.158/examples/jsm/" } }
+		</script>
+		<style>
+			body {
+				margin: 0;
+				overflow: hidden;
+				background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+				width: 100vw;
+				height: 100vh;
+			}
+			
+			canvas {
+				display: block;
+				width: 100%;
+				height: 100%;
+			}
+			
+			.title {
+				position: absolute;
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 2.5em;
+				font-weight: bold;
+				top: 50px;
+				color: white;
+				mix-blend-mode: difference;
+			}
+			
+			.con {
+				position: absolute;
+				width: 84%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				font-size: 1.5em;
+				font-weight: bold;
+				top: 0px;
+				padding: 0% 8% 0% 8%;
+				pointer-events: none;
+			}
+			
+			.con div {
+				width: 45px;
+				height: 45px;
+				border-radius: 50%;
+				background: rgba(0, 0, 0, 0.5);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-weight: bold;
+				font-size: 0.8em;
+				color: white;
+				z-index: 1000;
+				pointer-events: auto;
+			}
+			
+			#popup {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				/* ⭐ 毛玻璃核心 */
+				backdrop-filter: blur(12px);
+				-webkit-backdrop-filter: blur(12px);
+				/* 兼容 Safari */
+				/* 可选：加一点点透明底色，让效果更柔和 */
+				background: rgba(255, 255, 255, 0.1);
+				z-index: 9999;
+				opacity: 1;
+				transition: opacity 0.5s ease;
+			}
+			
+			#popup.hide {
+				opacity: 0;
+				pointer-events: none;
+			}
+			
+			.popup-content {
+				background: white;
+				padding: 0px 30px 20px 30px;
+				border-radius: 15px;
+				text-align: center;
+				min-width: 300px;
+				border: solid rgba(135, 135, 135, 0.3) 1.5px;
+			}
+			
+			#name{
+				position: absolute;
+				width: 100%;
+				bottom: 50px;
+				font-size: 1em;
+				color: white;
+				mix-blend-mode: difference;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="title">
+			小美丽的后宫
+		</div>
+		<canvas id="canvas3d"></canvas>
+
+		<div class="con">
+			<div id="left">
+				&lt;
+			</div>
+			<div id="right">
+				&gt;
+			</div>
+		</div>
+
+		<div id="name">
+
+		</div>
+
+		<div id="popup">
+			<div class="popup-content">
+				<h2>提示</h2>
+				<p>鼠标右键：改变视角</p>
+				<p>鼠标滚轮：改变大小</p>
+				<p>[&lt]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&gt]：改变人物</p>
+				<p style="font-size: 0.5em; color: #808890;">此弹窗5s后自动消失！</p>
+			</div>
+		</div>
+
+		<script type="module" src="js/main.js"></script>
+	</body>
+
+</html>
